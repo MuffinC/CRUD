@@ -23,4 +23,4 @@ const analytics = getAnalytics(app);
 
 
 //Initialise Cloud Firestore
-const db = getFirestore(app);
+export const db = getFirestore(app);
