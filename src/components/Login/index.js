@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
-
+import {getAuth,  signInWithEmailAndPassword} from "firebase/auth"
 const Login = ({ setIsAuthenticated }) => {
-  const adminEmail = 'admin@example.com';
-  const adminPassword = 'qwerty';
 
-  const [email, setEmail] = useState('admin@example.com');
-  const [password, setPassword] = useState('qwerty');
 
-  const handleLogin = e => {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const handleLogin = async (e) => {
     e.preventDefault();
+    const auth = getAuth();
 
-    if (email === adminEmail && password === adminPassword) {
+    try {
+      await signInWithEmailAndPassword(auth,email,password)
       Swal.fire({
         timer: 1500,
         showConfirmButton: false,
@@ -19,7 +20,7 @@ const Login = ({ setIsAuthenticated }) => {
           Swal.showLoading();
         },
         willClose: () => {
-          localStorage.setItem('is_authenticated', true);
+
           setIsAuthenticated(true);
 
           Swal.fire({
@@ -30,7 +31,7 @@ const Login = ({ setIsAuthenticated }) => {
           });
         },
       });
-    } else {
+    } catch (error) {
       Swal.fire({
         timer: 1500,
         showConfirmButton: false,
@@ -45,7 +46,8 @@ const Login = ({ setIsAuthenticated }) => {
             showConfirmButton: true,
           });
         },
-      });
+      });  
+      
     }
   };
 
