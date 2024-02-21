@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
-const Add = ({ employees, setEmployees, setIsAdding }) => {
+// create firestore linkage to throw documents in
+import { collection, addDoc } from 'firebase/firestore';
+//import database refference to add
+import {db} from '../../config/firestore'
+
+//in add we add theget employees function so that we can refresh the website after adding
+const Add = ({ employees, setEmployees, setIsAdding, getEmployees }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [salary, setSalary] = useState('');
   const [date, setDate] = useState('');
 
-  const handleAdd = e => {
+  const handleAdd = async (e) => {
     e.preventDefault();
 
     if (!firstName || !lastName || !email || !salary || !date) {
@@ -29,11 +35,20 @@ const Add = ({ employees, setEmployees, setIsAdding }) => {
     };
 
     employees.push(newEmployee);
-
-    // TODO: Add doc to DB
+    try {
+      await addDoc(collection(db, 'employees'),{
+        ...newEmployee
+  
+      });
+    } catch (error) {
+      console.log(error)
+    }
+    
 
     setEmployees(employees);
     setIsAdding(false);
+    //get employees is a function callback to index.js, the placement here is just to refresh the program
+    getEmployees();
 
     Swal.fire({
       icon: 'success',

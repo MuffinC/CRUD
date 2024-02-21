@@ -17,13 +17,11 @@ const Dashboard = ({ setIsAuthenticated }) => {
 
 const getEmployees = async () =>{
   const querySnapshot = await getDocs(collection(db, "employees"));
-  querySnapshot.forEach((doc) => {
-    // doc.data()
-    console.log(doc.id, " => ", doc.data());
-  });
+  const employees =querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+
   setEmployees(employees)
 }
-//19:23
+
   useEffect(() => {
     getEmployees()
   }, []);
@@ -83,6 +81,7 @@ const getEmployees = async () =>{
           employees={employees}
           setEmployees={setEmployees}
           setIsAdding={setIsAdding}
+          getEmployees={getEmployees}
         />
       )}
       {isEditing && (
