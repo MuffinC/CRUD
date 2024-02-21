@@ -91,6 +91,7 @@ const getEmployees = async () =>{
           selectedEmployee={selectedEmployee}
           setEmployees={setEmployees}
           setIsEditing={setIsEditing}
+          getEmployees={getEmployees}
         />
       )}
     </div>
