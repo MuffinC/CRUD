@@ -10,6 +10,11 @@ const Login = ({ setIsAuthenticated }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     const auth = getAuth();
+    if(document.activeElement.name === 'Login'){
+//46:49
+    }
+
+    
 
     try {
       await signInWithEmailAndPassword(auth,email,password)
@@ -73,7 +78,8 @@ const Login = ({ setIsAuthenticated }) => {
           value={password}
           onChange={e => setPassword(e.target.value)}
         />
-        <input style={{ marginTop: '12px' }} type="submit" value="Login" />
+        <input style={{ marginTop: '12px' }} type="submit" value="Login" name="Login" />
+        <input style={{ marginTop: '12px', marginLeft:'12px', backgroundColor:'black' }} type="submit" value="Register" name="Register"/>
       </form>
     </div>
   );
